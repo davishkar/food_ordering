@@ -1,9 +1,18 @@
 <?php
 
-$db_name = 'mysql:host=localhost;dbname=food_db';
-$user_name = 'root';
-$user_password = '';
+$dsn = "mysql:host=localhost;dbname=food_db;charset=utf8mb4";
+$username = "root";
+$password = "";
+$options = [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+];
 
-$conn = new PDO($db_name, $user_name, $user_password);
+try {
+    $conn = new PDO($dsn, $username, $password, $options);
+} catch (PDOException $e) {
+    die("Connection failed: " . $e->getMessage());
+}
+
 
 ?>

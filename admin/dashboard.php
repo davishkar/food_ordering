@@ -4,10 +4,10 @@ include '../components/connect.php';
 
 session_start();
 
-$admin_id = $_SESSION['admin_id'];
-
-if(!isset($admin_id)){
-   header('location:admin_login.php');
+// Redirect if not logged in
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+   header("Location: admin_login.php"); 
+   exit;
 }
 
 ?>
@@ -30,20 +30,20 @@ if(!isset($admin_id)){
 </head>
 <body style="background-image: url('images/food-1024x683.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
 
-<?php include '../components/admin_header.php' ?>
+<?php include '../components/admin_header.php'; ?>
 
 <!-- admin dashboard section starts  -->
 
 <section class="dashboard">
 
-   <h1 class="heading">dashboard</h1>
+   <h1 class="heading">Dashboard</h1>
 
    <div class="box-container">
 
    <div class="box">
-      <h3>welcome!</h3>
-      <p><?= $fetch_profile['name']; ?></p>
-      <a href="update_profile.php" class="btn">update profile</a>
+      <h3>Welcome!</h3>
+      <p><?php echo htmlspecialchars($_SESSION['username']); ?></p>
+      <a href="update_profile.php" class="btn">Update Profile</a>
    </div>
 
    <div class="box">
@@ -55,9 +55,9 @@ if(!isset($admin_id)){
             $total_pendings += $fetch_pendings['total_price'];
          }
       ?>
-      <h3><span>$</span><?= $total_pendings; ?><span>/-</span></h3>
-      <p>total pendings</p>
-      <a href="placed_orders.php" class="btn">see orders</a>
+      <h3><span>$</span><?= number_format($total_pendings, 2); ?><span>/-</span></h3>
+      <p>Total Pending</p>
+      <a href="placed_orders.php" class="btn">See Orders</a>
    </div>
 
    <div class="box">
@@ -69,9 +69,9 @@ if(!isset($admin_id)){
             $total_completes += $fetch_completes['total_price'];
          }
       ?>
-      <h3><span>$</span><?= $total_completes; ?><span>/-</span></h3>
-      <p>total completes</p>
-      <a href="placed_orders.php" class="btn">see orders</a>
+      <h3><span>$</span><?= number_format($total_completes, 2); ?><span>/-</span></h3>
+      <p>Total Completed</p>
+      <a href="placed_orders.php" class="btn">See Orders</a>
    </div>
 
    <div class="box">
@@ -81,8 +81,8 @@ if(!isset($admin_id)){
          $numbers_of_orders = $select_orders->rowCount();
       ?>
       <h3><?= $numbers_of_orders; ?></h3>
-      <p>total orders</p>
-      <a href="placed_orders.php" class="btn">see orders</a>
+      <p>Total Orders</p>
+      <a href="placed_orders.php" class="btn">See Orders</a>
    </div>
 
    <div class="box">
@@ -92,8 +92,8 @@ if(!isset($admin_id)){
          $numbers_of_products = $select_products->rowCount();
       ?>
       <h3><?= $numbers_of_products; ?></h3>
-      <p>products added</p>
-      <a href="products.php" class="btn">see products</a>
+      <p>Products Added</p>
+      <a href="products.php" class="btn">See Products</a>
    </div>
 
    <div class="box">
@@ -103,8 +103,8 @@ if(!isset($admin_id)){
          $numbers_of_users = $select_users->rowCount();
       ?>
       <h3><?= $numbers_of_users; ?></h3>
-      <p>users accounts</p>
-      <a href="users_accounts.php" class="btn">see users</a>
+      <p>User Accounts</p>
+      <a href="users_accounts.php" class="btn">See Users</a>
    </div>
 
    <div class="box">
@@ -114,8 +114,8 @@ if(!isset($admin_id)){
          $numbers_of_admins = $select_admins->rowCount();
       ?>
       <h3><?= $numbers_of_admins; ?></h3>
-      <p>admins</p>
-      <a href="admin_accounts.php" class="btn">see admins</a>
+      <p>Admins</p>
+      <a href="admin_accounts.php" class="btn">See Admins</a>
    </div>
 
    <div class="box">
@@ -125,23 +125,14 @@ if(!isset($admin_id)){
          $numbers_of_messages = $select_messages->rowCount();
       ?>
       <h3><?= $numbers_of_messages; ?></h3>
-      <p>new messages</p>
-      <a href="messages.php" class="btn">see messages</a>
+      <p>New Messages</p>
+      <a href="messages.php" class="btn">See Messages</a>
    </div>
 
    </div>
 
 </section>
-
 <!-- admin dashboard section ends -->
-
-
-
-
-
-
-
-
 
 <!-- custom js file link  -->
 <script src="../js/admin_script.js"></script>

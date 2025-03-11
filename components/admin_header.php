@@ -33,18 +33,17 @@ if(isset($message)){
       </div>
 
       <div class="profile">
-         <?php
-            $select_profile = $conn->prepare("SELECT * FROM `admin` WHERE id = ?");
-            $select_profile->execute([$admin_id]);
-            $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
-         ?>
-         <p><?= $fetch_profile['name']; ?></p>
-         <a href="update_profile.php" class="btn">update profile</a>
+         <?php if (isset($fetch_profile) && $fetch_profile): ?>
+            <p>Welcome, <span><?= htmlspecialchars($fetch_profile['name'] ?? 'Admin'); ?></span></p>
+            <a href="update_profile.php" class="btn">Update Profile</a>
+         <?php else: ?>
+            <p>Welcome, <span>Admin</span></p>
+         <?php endif; ?>
          <div class="flex-btn">
-            <a href="admin_login.php" class="option-btn">login</a>
-            <a href="register_admin.php" class="option-btn">register</a>
+            <a href="admin_login.php" class="option-btn">Login</a>
+            <a href="register_admin.php" class="option-btn">Register</a>
          </div>
-         <a href="../components/admin_logout.php" onclick="return confirm('logout from this website?');" class="delete-btn">logout</a>
+         <a href="admin_logout.php" onclick="return confirm('logout from this website?');" class="delete-btn">Logout</a>
       </div>
 
    </section>
